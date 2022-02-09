@@ -1,53 +1,49 @@
 const gameBoard = (() => { 
     let board = new Array(9).fill("");
+    const cells = document.querySelectorAll('.cell');
 
     const getBoard = () => {
-        let boardCopy = board;
-        return boardCopy;
-    }
-
-    const getIndex = () => {
-
-    }
-
-    const createEvents = () => {
-        const cells = document.querySelectorAll('.cell');
-        cells.forEach(cell => {
-            cell.addEventListener("click", () => {
-                if(cell.textContent == ""){
-                    cell.textContent = game.getCurrentPlayer().symbol
-                    game.turnSwitch();
-                }
-            })
-        });
-        return cells
+        return board;
     }
     
     const setCell = (index, value) => {
-        board.splice(index, 1, )
     }
 
     const resetBoard = () => {
-        board = new Array(9).fill(""); 
+        board = ["","","","","","","","",""]; 
     }
 
     const newGame = () => {
         let newGameBtn = document.querySelector('.game--restart')
         newGameBtn.addEventListener("click", () => {
-            getBoard();
             resetBoard();
         })
     }
+ 
+    newGame()
 
     return {
         getBoard,
         resetBoard,
-        createEvents,
-        newGame
+        newGame,
+        cells,
     }
 })();
 
 const game = (() => {
+    let cells = gameBoard.cells;
+    const createEvents = () => {
+        cells.forEach(cell => {
+            cell.addEventListener("click", () => {
+                if(cell.textContent == ""){
+                    cell.textContent = currentPlayer.symbol
+                    turnSwitch();
+                }
+            })
+        });
+
+    }
+
     const playerFactory = (name, symbol, turn) => {
         return {name, symbol, turn}
     }
@@ -68,13 +64,23 @@ const game = (() => {
     const player2 = playerFactory('Player 2', 'O', false);
     let currentPlayer = player1;
 
+    createEvents();
+
     return {
         turnSwitch,
+        createEvents,
         getCurrentPlayer
     }
 })();
 
-gameBoard.createEvents();
-gameBoard.newGame();
+const player = (() => {
+    const placeMark = () => {
+
+    }
+
+    return placeMark;
+})();
+
+
 
 
