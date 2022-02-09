@@ -1,46 +1,80 @@
 const gameBoard = (() => { 
-    const board = new Array(9).fill("");
+    let board = new Array(9).fill("");
 
     const getBoard = () => {
-        return board
+        let boardCopy = board;
+        return boardCopy;
+    }
+
+    const getIndex = () => {
+
     }
 
     const createEvents = () => {
-        const cells = document.getElementsByClassName('cell');
+        const cells = document.querySelectorAll('.cell');
         cells.forEach(cell => {
             cell.addEventListener("click", () => {
-                console.log("hello")
+                if(cell.textContent == ""){
+                    cell.textContent = game.getCurrentPlayer().symbol
+                    game.turnSwitch();
+                }
             })
         });
         return cells
+    }
+    
+    const setCell = (index, value) => {
+        board.splice(index, 1, )
     }
 
     const resetBoard = () => {
         board = new Array(9).fill(""); 
     }
 
+    const newGame = () => {
+        let newGameBtn = document.querySelector('.game--restart')
+        newGameBtn.addEventListener("click", () => {
+            getBoard();
+            resetBoard();
+        })
+    }
+
     return {
         getBoard,
         resetBoard,
         createEvents,
+        newGame
     }
 })();
-
-console.log(gameBoard.createEvents())
 
 const game = (() => {
     const playerFactory = (name, symbol, turn) => {
         return {name, symbol, turn}
     }
+    
+    const turnSwitch = () => {
+        if(currentPlayer === player1){
+            currentPlayer = player2;
+        } else { 
+            currentPlayer = player1 
+        }
+    }
+
+    const getCurrentPlayer = () => {
+        return currentPlayer
+    }
+
     const player1 = playerFactory('player 1', 'X', true);
     const player2 = playerFactory('Player 2', 'O', false);
+    let currentPlayer = player1;
 
     return {
-        player1,
-        player2,
+        turnSwitch,
+        getCurrentPlayer
     }
 })();
 
-
+gameBoard.createEvents();
+gameBoard.newGame();
 
 
