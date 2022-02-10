@@ -52,6 +52,9 @@ const game = (() => {
             newGameBtn.addEventListener("click", () => {
                 resetBoard();
                 currentPlayer = player1;
+                cells.forEach(cell => {
+                    cell.textContent = "";
+                })
             })
         }
      
