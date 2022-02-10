@@ -5,6 +5,7 @@ const playerFactory = (name, symbol, turn) => {
 const game = (() => {
 
     const cells = document.querySelectorAll(".cell");
+    const display = document.querySelector(".game--status");
     const player1 = playerFactory('player 1', 'X', true);
     const player2 = playerFactory('Player 2', 'O', false);
     let currentPlayer = player1;
@@ -24,17 +25,33 @@ const game = (() => {
         }
         
         const setCell = (index, value) => {
-            
+            board[index] = value
+            return true;
         }
     
         const resetBoard = () => {
             board = ["","","","","","","","",""]; 
+            
+        }
+
+        const checkForWin = () => {
+            let winner = null;
+            for(let i = 0; i < winConditions.length; i++){
+                winConditions[i].forEach(cond => {
+                    if(board[cond[0]] === board[cond[1]] && board[cond[1]] === board[cond[2]]){
+                        winner = currentPlayer;
+                    }
+                });
+            }
+            console.log(winner)
+            return winner;
         }
     
         const newGame = () => {
             let newGameBtn = document.querySelector('.game--restart')
             newGameBtn.addEventListener("click", () => {
                 resetBoard();
+                currentPlayer = player1;
             })
         }
      
@@ -45,7 +62,8 @@ const game = (() => {
             resetBoard,
             newGame,
             cells,
-            setCell
+            setCell,
+            checkForWin
         }
     })();
 
@@ -67,29 +85,14 @@ const game = (() => {
         const index = event.target.id;
         if(gameBoard.setCell(index, currentPlayer.symbol)){
             event.target.textContent = currentPlayer.symbol;
-          if(gameBoard.checkForWin(currentPlayer.symbol) ){
-            // handle a win
+          if(gameBoard.checkForWin(currentPlayer.symbol, index)){
+              //to add -> check if board is full for draw   
           } else {
-            // no win, next player
             switchPlayers();
           }
         }
       }
+
       setListeners();
 
 })();
-
-/*
-
-let cells = gameBoard.cells;
-const createEvents = () => {
-    cells.forEach(cell => {
-        cell.addEventListener("click", () => {
-            if(cell.textContent == ""){
-                cell.textContent = currentPlayer.symbol
-                turnSwitch();
-            }
-        })
-    });
-
-} */
