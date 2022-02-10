@@ -20,6 +20,28 @@ const game = (() => {
             [0,4,8],[2,4,6]          
         ];
 
+        const checkWinCondition = (winCondition, symbol) =>{
+            console.log(board[winCondition[0]])
+            if(board[winCondition[0]] === board[winCondition[1]] && 
+                board[winCondition[1]] === board[winCondition[2]]){
+                    return true
+                }
+        }
+
+        /* winCondition.every( index => board[index]===marker) */
+
+        const checkForWin = () => {
+            let winner = null;
+            for(let i = 0; i < winConditions.length; i++){
+                if(checkWinCondition(winConditions[i], currentPlayer.symbol)){
+                    display.textContent = currentPlayer.name + " Wins!";
+                }
+
+            }
+            console.log(winner)
+            return winner;
+        }
+
         const getBoard = () => {
             return board;
         }
@@ -34,22 +56,11 @@ const game = (() => {
             
         }
 
-        const checkForWin = () => {
-            let winner = null;
-            for(let i = 0; i < winConditions.length; i++){
-                winConditions[i].forEach(cond => {
-                    if(board[cond[0]] === board[cond[1]] && board[cond[1]] === board[cond[2]]){
-                        winner = currentPlayer;
-                    }
-                });
-            }
-            console.log(winner)
-            return winner;
-        }
     
         const newGame = () => {
             let newGameBtn = document.querySelector('.game--restart')
             newGameBtn.addEventListener("click", () => {
+                display.textContent = currentPlayer + " Wins!";
                 resetBoard();
                 currentPlayer = player1;
                 cells.forEach(cell => {
